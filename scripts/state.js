@@ -16,6 +16,8 @@ export const MODULE_ID = "grim-almanac";
 export const SOCKET = `module.${MODULE_ID}`;
 export const REFRESH_HOOK = "grimAlmanac.refresh";
 
+export const THEMES = ["crimson", "ash", "amethyst", "sapphire"];
+
 export const L = (key) => game.i18n.localize(`GRIMALMANAC.${key}`);
 export const LF = (key, data) => game.i18n.format(`GRIMALMANAC.${key}`, data);
 
@@ -50,6 +52,17 @@ export function registerSettings() {
     scope: "world", config: true, type: Boolean, default: true, onChange: refresh
   });
 
+  game.settings.register(MODULE_ID, "theme", {
+    name: "GRIMALMANAC.Settings.Theme.Name",
+    hint: "GRIMALMANAC.Settings.Theme.Hint",
+    scope: "world", config: true, type: String, default: "crimson",
+    choices: Object.fromEntries(THEMES.map((t) => [t, `GRIMALMANAC.Theme.${t}`])),
+    onChange: () => {
+      applyTheme();
+      refresh();
+    }
+  });
+
   // ---- per-client options ----
   game.settings.register(MODULE_ID, "hudScale", {
     name: "GRIMALMANAC.Settings.Scale.Name",
@@ -69,6 +82,23 @@ export function registerSettings() {
   game.settings.register(MODULE_ID, "hudPosition", {
     scope: "client", config: false, type: Object, default: {}
   });
+}
+
+/* ------------------------------ theme ------------------------------ */
+
+export function getTheme() {
+  const t = game.settings.get(MODULE_ID, "theme");
+  return THEMES.includes(t) ? t : "crimson";
+}
+
+/** The stylesheet keys every colour off this attribute. */
+export function applyTheme() {
+  document.body.dataset.gaTheme = getTheme();
+}
+
+export async function setTheme(theme) {
+  if (!game.user.isGM || !THEMES.includes(theme)) return;
+  await game.settings.set(MODULE_ID, "theme", theme);
 }
 
 /* ------------------------------ readers ------------------------------ */

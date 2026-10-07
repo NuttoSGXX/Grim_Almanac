@@ -1,69 +1,166 @@
 {
   "GRIMALMANAC": {
     "Settings": {
-      "ShowToPlayers": { "Name": "Show the almanac to players", "Hint": "When off, only the GM sees the date and time display. Rest scenes still play for everyone." },
-      "Scale": { "Name": "Almanac size", "Hint": "Drag the almanac to move it. Double-click it to send it back to the top of the screen." },
-      "Clock24": { "Name": "Use a 24-hour clock" },
-      "TempUnit": { "Name": "Temperature unit" }
+      "ShowToPlayers": {
+        "Name": "Show the almanac to players",
+        "Hint": "When off, only the GM sees the date and time display. Rest scenes still play for everyone."
+      },
+      "Scale": {
+        "Name": "Almanac size",
+        "Hint": "Drag the almanac to move it. Double-click it to send it back to the top of the screen."
+      },
+      "Clock24": {
+        "Name": "Use a 24-hour clock"
+      },
+      "TempUnit": {
+        "Name": "Temperature unit"
+      },
+      "Theme": {
+        "Name": "Colour theme",
+        "Hint": "Applies to the almanac, the rest scene and the almanac settings window for everyone in this world."
+      }
     },
-    "Season": { "winter": "Winter", "spring": "Spring", "summer": "Summer", "autumn": "Autumn" },
+    "Season": {
+      "winter": "Winter",
+      "spring": "Spring",
+      "summer": "Summer",
+      "autumn": "Autumn"
+    },
     "Period": {
-      "midnight": "Midnight", "lateNight": "Dead of night", "dawn": "Dawn", "morning": "Morning", "noon": "Noon",
-      "afternoon": "Afternoon", "dusk": "Dusk", "evening": "Evening", "night": "Night"
+      "midnight": "Midnight",
+      "lateNight": "Dead of night",
+      "dawn": "Dawn",
+      "morning": "Morning",
+      "noon": "Noon",
+      "afternoon": "Afternoon",
+      "dusk": "Dusk",
+      "evening": "Evening",
+      "night": "Night"
     },
     "Temp": {
-      "bitter": "Bitter", "freezing": "Freezing", "cold": "Cold", "chilly": "Chilly", "mild": "Mild",
-      "warm": "Warm", "hot": "Hot", "scorching": "Scorching"
+      "bitter": "Bitter",
+      "freezing": "Freezing",
+      "cold": "Cold",
+      "chilly": "Chilly",
+      "mild": "Mild",
+      "warm": "Warm",
+      "hot": "Hot",
+      "scorching": "Scorching"
     },
     "Weather": {
-      "clear": "Clear", "cloudy": "Cloudy", "overcast": "Overcast", "rain": "Rain", "storm": "Thunderstorm",
-      "snow": "Snow", "blizzard": "Blizzard", "fog": "Fog", "wind": "Windy", "still": "Still air"
+      "clear": "Clear",
+      "cloudy": "Cloudy",
+      "overcast": "Overcast",
+      "rain": "Rain",
+      "storm": "Thunderstorm",
+      "snow": "Snow",
+      "blizzard": "Blizzard",
+      "fog": "Fog",
+      "wind": "Windy",
+      "still": "Still air"
     },
     "Climate": {
-      "temperate": "Temperate", "cold": "Frozen north", "warm": "Warm south", "desert": "Desert",
-      "tropical": "Tropical", "underground": "Underground"
+      "temperate": "Temperate",
+      "cold": "Frozen north",
+      "warm": "Warm south",
+      "desert": "Desert",
+      "tropical": "Tropical",
+      "underground": "Underground"
     },
     "Moon": {
-      "new": "New moon", "waxingCrescent": "Waxing crescent", "firstQuarter": "First quarter", "waxingGibbous": "Waxing gibbous",
-      "full": "Full moon", "waningGibbous": "Waning gibbous", "lastQuarter": "Last quarter", "waningCrescent": "Waning crescent"
+      "new": "New moon",
+      "waxingCrescent": "Waxing crescent",
+      "firstQuarter": "First quarter",
+      "waxingGibbous": "Waxing gibbous",
+      "full": "Full moon",
+      "waningGibbous": "Waning gibbous",
+      "lastQuarter": "Last quarter",
+      "waningCrescent": "Waning crescent"
     },
     "Controls": {
-      "Back10": "Go back 10 minutes", "Forward10": "Advance 10 minutes", "Forward60": "Advance 1 hour",
-      "ShortTip": "Start a short rest", "LongTip": "Start a long rest", "Settings": "Almanac settings"
+      "Back10": "Go back 10 minutes",
+      "Forward10": "Advance 10 minutes",
+      "Forward60": "Advance 1 hour",
+      "ShortTip": "Start a short rest",
+      "LongTip": "Start a long rest",
+      "Settings": "Almanac settings"
     },
     "Rest": {
-      "Short": "Short rest", "Long": "Long rest",
+      "Short": "Short rest",
+      "Long": "Long rest",
       "HoursLabel": "Hours that pass",
       "WhoRests": "Who rests",
       "Until": "{hours} hours pass. The party rises at {time}, {date}.",
       "UntilOne": "1 hour passes. The party moves on at {time}, {date}.",
-      "Pass": "{hours} hours pass", "PassOne": "1 hour passes",
+      "Pass": "{hours} hours pass",
+      "PassOne": "1 hour passes",
       "NoActors": "No player-owned characters found. Only the clock will move.",
       "NoSystem": "Character recovery needs the D&D 5e system. Only the clock will move.",
-      "Cancel": "Cancel", "BeginShort": "Begin short rest", "BeginLong": "Begin long rest",
+      "Cancel": "Cancel",
+      "BeginShort": "Begin short rest",
+      "BeginLong": "Begin long rest",
       "Failed": "The rest could not be applied to {name}. Check the console for details."
     },
     "Config": {
-      "Title": "Grim Almanac", "Open": "Open almanac settings", "MenuHint": "Set the date, time, weather and calendar.",
-      "Tab": { "date": "Date and time", "weather": "Weather", "calendar": "Calendar" },
-      "SetDate": "Set the date", "Day": "Day", "Month": "Month", "Year": "Year", "Hour": "Hour", "Minute": "Minute",
+      "Title": "Grim Almanac",
+      "Open": "Open almanac settings",
+      "MenuHint": "Set the date, time, weather and calendar.",
+      "Tab": {
+        "date": "Date and time",
+        "weather": "Weather",
+        "calendar": "Calendar"
+      },
+      "SetDate": "Set the date",
+      "Day": "Day",
+      "Month": "Month",
+      "Year": "Year",
+      "Hour": "Hour",
+      "Minute": "Minute",
       "SetDateHint": "Setting the date re-labels the present moment. World time does not move, so active effects are not expired.",
       "SetDateButton": "Set date and time",
       "Advance": "Let time pass",
       "AdvanceHint": "These move world time, so effect durations count down with them.",
-      "Moon": "Moon", "MoonName": "Name", "MoonCycle": "Cycle (days)", "MoonPhase": "Phase tonight", "MoonButton": "Save moon",
-      "Display": "Display", "ResetPosition": "Move my almanac back to the top",
-      "DisplayHint": "Size, 12/24-hour clock and °C/°F are per player, under Configure Settings → Grim Almanac.",
+      "Moon": "Moon",
+      "MoonName": "Name",
+      "MoonCycle": "Cycle (days)",
+      "MoonPhase": "Phase tonight",
+      "MoonButton": "Save moon",
+      "Display": "Display",
+      "ResetPosition": "Move my almanac back to the top",
+      "DisplayHint": "The theme is shared by the whole table. Size, 12/24-hour clock and °C/°F are per player, under Configure Settings → Grim Almanac.",
       "Weather": "Weather",
       "WeatherAuto": "Roll new weather each day from the season and climate",
       "WeatherAutoHint": "On: temperature rises toward mid-afternoon and falls overnight; whatever you save below holds until the next dawn roll. Off: your values stay until you change them.",
-      "Climate": "Climate", "Temperature": "Temperature now", "Condition": "Sky",
-      "WeatherButton": "Save weather", "Reroll": "Roll again",
-      "Calendar": "Calendar", "Preset": "Start from", "PresetHarptos": "Harptos (Forgotten Realms)", "PresetGregorian": "Twelve months (real world)", "PresetCustom": "Custom",
-      "Era": "Era label", "LeapInterval": "Leap year every (0 = never)",
-      "MonthName": "Name", "Days": "Days", "LeapDays": "Leap days", "SeasonCol": "Season", "Festival": "Festival",
+      "Climate": "Climate",
+      "Temperature": "Temperature now",
+      "Condition": "Sky",
+      "WeatherButton": "Save weather",
+      "Reroll": "Roll again",
+      "Calendar": "Calendar",
+      "Preset": "Start from",
+      "PresetHarptos": "Harptos (Forgotten Realms)",
+      "PresetGregorian": "Twelve months (real world)",
+      "PresetCustom": "Custom",
+      "Era": "Era label",
+      "LeapInterval": "Leap year every (0 = never)",
+      "MonthName": "Name",
+      "Days": "Days",
+      "LeapDays": "Leap days",
+      "SeasonCol": "Season",
+      "Festival": "Festival",
       "CalendarHint": "A festival is a short month that sits between two others. Set Days to 0 and Leap days to 1 for a day that exists only in leap years.",
-      "AddMonth": "Add a month", "RemoveMonth": "Remove", "NewMonth": "New month", "SaveCalendar": "Save calendar", "CalendarSaved": "Calendar saved."
+      "AddMonth": "Add a month",
+      "RemoveMonth": "Remove",
+      "NewMonth": "New month",
+      "SaveCalendar": "Save calendar",
+      "CalendarSaved": "Calendar saved.",
+      "Theme": "Colour theme"
+    },
+    "Theme": {
+      "crimson": "Crimson (black and red)",
+      "ash": "Ash (black, grey and white)",
+      "amethyst": "Amethyst (white and purple)",
+      "sapphire": "Sapphire (black and blue)"
     }
   }
 }

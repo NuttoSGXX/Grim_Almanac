@@ -5,7 +5,7 @@
 import { PRESETS, SEASONS, MOON_PHASES, clonePreset, formatTime } from "./calendar.js";
 import { CLIMATES, CONDITIONS, toUnit, fromUnit } from "./weather.js";
 import {
-  MODULE_ID, REFRESH_HOOK, L, getCalendar, getDate, getWeather, getMoon, getMoonPhase, getTempC,
+  MODULE_ID, REFRESH_HOOK, THEMES, L, getTheme, setTheme, getCalendar, getDate, getWeather, getMoon, getMoonPhase, getTempC,
   nowSeconds, clientOptions, setDateTime, advanceTime, setCalendar, setMoon, setWeather, ensureWeather
 } from "./state.js";
 import { moonOffsetFor } from "./calendar.js";
@@ -112,6 +112,9 @@ export class AlmanacConfig extends ApplicationV2 {
       </fieldset>
       <fieldset>
         <legend>${L("Config.Display")}</legend>
+        <div class="ga-grid ga-grid-3">
+          <label>${L("Config.Theme")}<select name="theme">${THEMES.map((t) => opt(t, L(`Theme.${t}`), t === getTheme())).join("")}</select></label>
+        </div>
         <button type="button" class="ga-btn" data-do="resetPosition">${L("Config.ResetPosition")}</button>
         <p class="ga-hint">${L("Config.DisplayHint")}</p>
       </fieldset>`;
@@ -199,6 +202,7 @@ export class AlmanacConfig extends ApplicationV2 {
 
   #onChange(ev, root) {
     const target = ev.target;
+    if (target.name === "theme") return setTheme(target.value);
     if (target.name === "preset") {
       if (target.value !== "custom" && PRESETS[target.value]) {
         this.#draft = clonePreset(target.value);

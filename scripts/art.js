@@ -53,20 +53,20 @@ export function dialMarkup(p, hub = emblemMarkup()) {
   return `
     <defs>
       <linearGradient id="${p}-sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#a11c20"/>
-        <stop offset="0.36" stop-color="#5a1114"/>
-        <stop offset="0.52" stop-color="#1c0b0d"/>
-        <stop offset="1" stop-color="#040304"/>
+        <stop offset="0" style="stop-color:var(--ga-sky-1)"/>
+        <stop offset="0.36" style="stop-color:var(--ga-sky-2)"/>
+        <stop offset="0.52" style="stop-color:var(--ga-sky-3)"/>
+        <stop offset="1" style="stop-color:var(--ga-sky-4)"/>
       </linearGradient>
       <radialGradient id="${p}-hub" cx="0.5" cy="0.4" r="0.7">
-        <stop offset="0" stop-color="#1b1011"/>
-        <stop offset="1" stop-color="#050304"/>
+        <stop offset="0" style="stop-color:var(--ga-hub-1)"/>
+        <stop offset="1" style="stop-color:var(--ga-hub-2)"/>
       </radialGradient>
       <clipPath id="${p}-hubclip"><circle r="53"/></clipPath>
       <linearGradient id="${p}-rim" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#4b3232"/>
-        <stop offset="0.5" stop-color="#1e1314"/>
-        <stop offset="1" stop-color="#0c0708"/>
+        <stop offset="0" style="stop-color:var(--ga-rim-1)"/>
+        <stop offset="0.5" style="stop-color:var(--ga-rim-2)"/>
+        <stop offset="1" style="stop-color:var(--ga-rim-3)"/>
       </linearGradient>
     </defs>
     <circle class="ga-dial-rim" r="98" fill="url(#${p}-rim)"/>
@@ -85,6 +85,7 @@ export function dialMarkup(p, hub = emblemMarkup()) {
       <path class="ga-dial-horizon" d="M-76,0 l5,-3.5 l5,3.5 l-5,3.5 Z M66,0 l5,-3.5 l5,3.5 l-5,3.5 Z"/>
     </g>
     <circle class="ga-dial-inner-line" r="87"/>
+    <circle class="ga-glint ga-glint-ring" pathLength="100" r="87"/>
     <g class="ga-dial-ticks">${ticks.join("")}</g>
     <circle class="ga-dial-hub" r="56" fill="url(#${p}-hub)"/>
     <circle class="ga-dial-hub-line" r="51.5"/>
@@ -181,18 +182,18 @@ export function hudMarkup() {
   <svg class="ga-svg" viewBox="0 0 ${HUD_VIEW.w} ${HUD_VIEW.h}" role="img" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="gah-panel" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#1d1012"/>
-        <stop offset="0.55" stop-color="#100a0b"/>
-        <stop offset="1" stop-color="#080506"/>
+        <stop offset="0" style="stop-color:var(--ga-panel-1)"/>
+        <stop offset="0.55" style="stop-color:var(--ga-panel-2)"/>
+        <stop offset="1" style="stop-color:var(--ga-panel-3)"/>
       </linearGradient>
       <linearGradient id="gah-plaque" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#241214"/>
-        <stop offset="1" stop-color="#0b0607"/>
+        <stop offset="0" style="stop-color:var(--ga-plaque-1)"/>
+        <stop offset="1" style="stop-color:var(--ga-plaque-2)"/>
       </linearGradient>
       <linearGradient id="gah-merc" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#7d1216"/>
-        <stop offset="0.45" stop-color="#e03a3f"/>
-        <stop offset="1" stop-color="#8f1418"/>
+        <stop offset="0" style="stop-color:var(--ga-merc)"/>
+        <stop offset="0.45" style="stop-color:var(--ga-ember)"/>
+        <stop offset="1" style="stop-color:var(--ga-merc)"/>
       </linearGradient>
       <clipPath id="gah-tube"><rect x="465.6" y="50" width="8.8" height="62" rx="4.4"/></clipPath>
     </defs>
@@ -210,8 +211,10 @@ export function hudMarkup() {
 
     <path class="ga-panel" d="${archL}" fill="url(#gah-panel)"/>
     <path class="ga-panel-line" d="${archLin}"/>
+    <path class="ga-glint" pathLength="100" d="${archLin}"/>
     <path class="ga-panel" d="${archR}" fill="url(#gah-panel)"/>
     <path class="ga-panel-line" d="${archRin}"/>
+    <path class="ga-glint ga-glint-b" pathLength="100" d="${archRin}"/>
     <path class="ga-stud" d="M113,27 l4,5.5 l-4,5.5 l-4,-5.5 Z M527,27 l4,5.5 l-4,5.5 l-4,-5.5 Z"/>
 
     <!-- date -->
@@ -255,6 +258,7 @@ export function hudMarkup() {
     <text class="ga-t ga-label ga-period" x="320" y="198.5" data-ga="period"></text>
     <path class="ga-plaque" d="${plaque}" fill="url(#gah-plaque)"/>
     <path class="ga-plaque-line" d="${plaqueIn}"/>
+    <path class="ga-glint ga-glint-c" pathLength="100" d="${plaqueIn}"/>
     <path class="ga-stud" d="M226,151 l4.5,-6 l4.5,6 l-4.5,6 Z M405,151 l4.5,-6 l4.5,6 l-4.5,6 Z"/>
     <text class="ga-t ga-time" x="320" y="167"><tspan data-ga="hh"></tspan><tspan class="ga-colon">:</tspan><tspan data-ga="mm"></tspan><tspan class="ga-suffix" dx="5" data-ga="suffix"></tspan></text>
   </svg>`;

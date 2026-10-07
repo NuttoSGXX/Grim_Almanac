@@ -3,7 +3,7 @@
  */
 
 import {
-  MODULE_ID, SOCKET, REFRESH_HOOK, registerSettings, ensureWeather, getDate, nowSeconds, advanceTime, setDateTime
+  MODULE_ID, SOCKET, REFRESH_HOOK, registerSettings, applyTheme, ensureWeather, getDate, nowSeconds, advanceTime, setDateTime
 } from "./state.js";
 import { AlmanacHUD } from "./hud.js";
 import { AlmanacConfig } from "./config.js";
@@ -31,6 +31,7 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", () => {
+  applyTheme();
   hud = new AlmanacHUD({
     onRest: (type) => openRestPopover(hud, type),
     onConfig: openConfig

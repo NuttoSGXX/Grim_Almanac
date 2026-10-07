@@ -2,7 +2,7 @@
  * Grim Almanac — the on-screen date / time / weather display.
  */
 
-import { periodKey, isNight, formatTime } from "./calendar.js";
+import { DAY, periodKey, isNight, formatTime } from "./calendar.js";
 import { tempBand, toUnit } from "./weather.js";
 import {
   MODULE_ID, L, getCalendar, getDate, getWeather, getMoon, getMoonPhase, getTempC,
@@ -20,6 +20,7 @@ export class AlmanacHUD {
     this.refs = {};
     this.texts = {};
     this.angle = null;
+    this.lastNow = null;
     this.first = true;
   }
 
@@ -238,15 +239,14 @@ export class AlmanacHUD {
     this.#text("moon", L(`Moon.${phase.key}`));
     this.#icon("moonIcon", `moon-${Math.round(phase.fraction * 48)}`, moonIcon(phase.fraction));
 
-    // dial: turn the short way round so midnight does not spin it backwards
-    const target = dialAngle(d.secondsOfDay);
-    if (this.angle === null) this.angle = target;
+    // dial: time moving forward always turns it clockwise, however big the jump;
+    // only going back in time turns it the other way.
+    if (this.angle === null) this.angle = dialAngle(d.secondsOfDay);
     else {
-      let delta = (target - this.angle) % 360;
-      if (delta > 180) delta -= 360;
-      if (delta < -180) delta += 360;
-      this.angle += delta;
+      const turn = ((now - this.lastNow) / DAY) * 360;
+      this.angle += Math.sign(turn) * (Math.abs(turn) % 360);
     }
+    this.lastNow = now;
     this.refs.disc.style.transform = `rotate(${this.angle.toFixed(2)}deg)`;
     this.el.classList.toggle("ga-night", night);
 
