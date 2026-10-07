@@ -1,0 +1,1114 @@
+/* ==========================================================================
+   Grim Almanac
+   Palette: ink / coal / iron / wine / blood / ember / bone / ash
+   Type:    Grenze (display), Cinzel (engraved labels)
+   ========================================================================== */
+
+@font-face {
+  font-family: "GA Grenze";
+  src: url("../fonts/Grenze-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GA Grenze";
+  src: url("../fonts/Grenze-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GA Grenze";
+  src: url("../fonts/Grenze-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GA Cinzel";
+  src: url("../fonts/Cinzel.woff2") format("woff2");
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+.ga-hud,
+.ga-rest-overlay,
+.grim-almanac-config {
+  --ga-ink: #060405;
+  --ga-coal: #120b0c;
+  --ga-iron: #3a2224;
+  --ga-iron-hi: #6b4646;
+  --ga-wine: #4a0e11;
+  --ga-blood: #a3161b;
+  --ga-ember: #e03a3f;
+  --ga-bone: #eadfce;
+  --ga-ash: #a89a8f;
+  --ga-display: "GA Grenze", "Modesto Condensed", "Palatino Linotype", serif;
+  --ga-label: "GA Cinzel", "Modesto Condensed", "Palatino Linotype", serif;
+  --ga-body: var(--font-primary, "Signika", sans-serif);
+}
+
+.ga-hud *,
+.ga-rest-overlay *,
+.ga-config * {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   HUD
+   -------------------------------------------------------------------------- */
+
+.ga-hud {
+  position: fixed;
+  z-index: 60;
+  width: var(--ga-width, 520px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.ga-hud[hidden] {
+  display: none;
+}
+
+.ga-hud-frame {
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.7));
+  touch-action: none;
+}
+
+.ga-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Only the painted artwork catches the mouse, so the canvas stays clickable around it. */
+.ga-svg > * {
+  pointer-events: visiblePainted;
+  cursor: grab;
+}
+
+.ga-dragging .ga-svg > * {
+  cursor: grabbing;
+}
+
+.ga-panel {
+  stroke: var(--ga-iron);
+  stroke-width: 3;
+}
+
+.ga-panel-line {
+  fill: none;
+  stroke: var(--ga-blood);
+  stroke-width: 1;
+  opacity: 0.75;
+}
+
+.ga-plaque {
+  stroke: var(--ga-iron-hi);
+  stroke-width: 2.5;
+}
+
+.ga-plaque-line {
+  fill: none;
+  stroke: var(--ga-blood);
+  stroke-width: 1;
+}
+
+.ga-tab {
+  fill: #0b0607;
+  stroke: var(--ga-iron);
+  stroke-width: 2;
+}
+
+.ga-stud {
+  fill: var(--ga-ember);
+}
+
+.ga-rule {
+  stroke: var(--ga-iron);
+  stroke-width: 1;
+}
+
+/* text */
+
+.ga-t {
+  fill: var(--ga-bone);
+  text-anchor: middle;
+  font-family: var(--ga-display);
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.55);
+  stroke-width: 2px;
+}
+
+.ga-day {
+  font-size: 72px;
+  font-weight: 600;
+}
+
+.ga-month {
+  font-size: 29px;
+  font-weight: 500;
+}
+
+.ga-sub {
+  font-size: 17.5px;
+  font-weight: 400;
+  fill: var(--ga-ash);
+}
+
+.ga-label {
+  font-family: var(--ga-label);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  fill: var(--ga-ash);
+  stroke-width: 1px;
+}
+
+.ga-year {
+  font-size: 13px;
+  fill: #df6468;
+}
+
+.ga-temp {
+  font-size: 56px;
+  font-weight: 600;
+}
+
+.ga-unit {
+  font-family: var(--ga-label);
+  font-size: 17px;
+  font-weight: 700;
+  fill: var(--ga-ash);
+}
+
+.ga-time {
+  font-size: 47px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.ga-suffix {
+  font-family: var(--ga-label);
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--ga-ash);
+}
+
+.ga-period {
+  fill: var(--ga-bone);
+}
+
+.ga-colon {
+  animation: ga-colon 2.4s ease-in-out infinite;
+}
+
+.ga-changed {
+  animation: ga-ink 0.6s ease-out;
+}
+
+.ga-festival-mark path {
+  fill: var(--ga-wine);
+  stroke: var(--ga-ember);
+  stroke-width: 1.5;
+}
+
+.ga-festival-mark circle {
+  fill: var(--ga-bone);
+}
+
+/* icons */
+
+.ga-icon {
+  fill: none;
+  stroke: var(--ga-ash);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ga-icon .ga-solid {
+  fill: var(--ga-coal);
+}
+
+.ga-icon .ga-bolt {
+  fill: var(--ga-ember);
+  stroke: none;
+}
+
+.ga-icon .ga-flakes circle {
+  fill: var(--ga-ash);
+  stroke: none;
+}
+
+.ga-moon .ga-moon-dark {
+  fill: #1c1113;
+  stroke: var(--ga-ash);
+  stroke-width: 0.9;
+}
+
+.ga-moon .ga-moon-lit {
+  fill: var(--ga-bone);
+  stroke: none;
+}
+
+/* thermometer */
+
+.ga-thermo-glass {
+  fill: #0a0607;
+  stroke: var(--ga-iron-hi);
+  stroke-width: 1.6;
+}
+
+.ga-thermo-fill {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform 0.9s ease;
+}
+
+.ga-thermo-bulb {
+  fill: var(--ga-ember);
+}
+
+.ga-thermo-marks {
+  stroke: var(--ga-iron-hi);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+/* gear */
+
+.ga-gear {
+  fill: #1a1112;
+  stroke: var(--ga-iron-hi);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  animation: ga-spin 140s linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Dial (shared by the HUD and the rest scene)
+   -------------------------------------------------------------------------- */
+
+.ga-dial {
+  transition: opacity 0.35s ease;
+}
+
+.ga-resting .ga-dial {
+  opacity: 0;
+  transition: none;
+}
+
+.ga-dial-rim-line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5;
+}
+
+.ga-dial-inner-line {
+  fill: none;
+  stroke: var(--ga-blood);
+  stroke-width: 1.2;
+}
+
+.ga-dial-disc {
+  transition: transform 1.2s cubic-bezier(0.3, 0.1, 0.2, 1);
+}
+
+.ga-rest-dial .ga-dial-disc {
+  transition: none;
+}
+
+.ga-tick {
+  stroke: var(--ga-iron-hi);
+  stroke-width: 1;
+}
+
+.ga-tick-major {
+  stroke: var(--ga-ember);
+  stroke-width: 1.8;
+}
+
+.ga-sun-glow {
+  fill: var(--ga-ember);
+  opacity: 0.3;
+}
+
+.ga-sun-core {
+  fill: var(--ga-bone);
+}
+
+.ga-sun-rays {
+  stroke: var(--ga-bone);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.ga-dial-moon path {
+  fill: var(--ga-bone);
+}
+
+.ga-dial-stars {
+  fill: var(--ga-bone);
+  opacity: 0.75;
+}
+
+.ga-dial-horizon {
+  fill: var(--ga-blood);
+}
+
+.ga-dial-hub {
+  stroke: var(--ga-iron-hi);
+  stroke-width: 2;
+}
+
+.ga-dial-hub-line {
+  fill: none;
+  stroke: var(--ga-blood);
+  stroke-width: 1;
+}
+
+.ga-emblem {
+  fill: #1c0d0f;
+  stroke: var(--ga-blood);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.ga-emblem-ring {
+  fill: #0a0607;
+  stroke: var(--ga-iron-hi);
+  stroke-width: 1.2;
+}
+
+.ga-gem {
+  fill: var(--ga-ember);
+  animation: ga-breathe 6s ease-in-out infinite;
+}
+
+.ga-dial-pointer {
+  fill: var(--ga-ember);
+  stroke: #2a0a0c;
+  stroke-width: 1;
+}
+
+/* --------------------------------------------------------------------------
+   GM controls and rest popover
+   -------------------------------------------------------------------------- */
+
+.ga-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  pointer-events: auto;
+  opacity: 0.62;
+  transition: opacity 0.2s ease;
+}
+
+.ga-hud:hover .ga-controls,
+.ga-controls:focus-within {
+  opacity: 1;
+}
+
+.ga-sep {
+  width: 5px;
+  height: 5px;
+  margin: 0 5px;
+  background: var(--ga-blood);
+  transform: rotate(45deg);
+}
+
+.ga-hud .ga-btn,
+.grim-almanac-config .ga-btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: auto;
+  min-height: 0;
+  height: 24px;
+  margin: 0;
+  padding: 0 9px;
+  border: 1px solid var(--ga-iron);
+  border-radius: 2px;
+  background: linear-gradient(#1f1214, #0c0708);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+  color: var(--ga-bone);
+  font-family: var(--ga-label);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.ga-hud .ga-btn i,
+.grim-almanac-config .ga-btn i {
+  margin: 0;
+  font-size: 11px;
+  color: #df6468;
+}
+
+.ga-hud .ga-btn:hover,
+.grim-almanac-config .ga-btn:hover {
+  border-color: var(--ga-ember);
+  background: linear-gradient(#3a1215, #14090a);
+  text-shadow: none;
+}
+
+.ga-hud .ga-btn:focus-visible,
+.grim-almanac-config .ga-btn:focus-visible {
+  outline: 2px solid var(--ga-ember);
+  outline-offset: 1px;
+}
+
+.ga-hud .ga-btn-primary,
+.grim-almanac-config .ga-btn-primary {
+  border-color: var(--ga-blood);
+  background: linear-gradient(#8f171b, #4a0e11);
+}
+
+.ga-hud .ga-btn-primary:hover,
+.grim-almanac-config .ga-btn-primary:hover {
+  background: linear-gradient(#b51d22, #5c1114);
+}
+
+.ga-hud .ga-btn-primary i,
+.grim-almanac-config .ga-btn-primary i {
+  color: var(--ga-bone);
+}
+
+.ga-pop-slot {
+  display: flex;
+  justify-content: center;
+}
+
+.ga-pop {
+  width: min(330px, 96vw);
+  margin-top: 7px;
+  padding: 13px 15px 14px;
+  border: 1px solid var(--ga-iron-hi);
+  outline: 1px solid var(--ga-blood);
+  outline-offset: -5px;
+  background: linear-gradient(#1b0f11, #0a0607);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.75);
+  color: var(--ga-bone);
+  font-family: var(--ga-body);
+  font-size: 13px;
+  line-height: 1.4;
+  pointer-events: auto;
+  user-select: none;
+}
+
+.ga-pop-title {
+  margin-bottom: 8px;
+  font-family: var(--ga-display);
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+}
+
+.ga-pop-label {
+  display: block;
+  margin: 8px 0 4px;
+  color: var(--ga-ash);
+  font-family: var(--ga-label);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.ga-pop-hours {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 6px;
+  align-items: center;
+}
+
+.ga-pop-hours .ga-pop-label {
+  grid-column: 1 / -1;
+  margin-top: 0;
+}
+
+.ga-chips {
+  display: flex;
+  gap: 4px;
+}
+
+.ga-hud .ga-chip {
+  flex: 1;
+  width: auto;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ga-iron);
+  border-radius: 2px;
+  background: #0c0708;
+  color: var(--ga-bone);
+  font-family: var(--ga-display);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ga-hud .ga-chip:hover {
+  border-color: var(--ga-ember);
+}
+
+.ga-hud .ga-chip.is-on {
+  border-color: var(--ga-ember);
+  background: linear-gradient(#8f171b, #4a0e11);
+}
+
+.ga-hud .ga-hours {
+  width: 54px;
+  height: 28px;
+  padding: 0 4px;
+  border: 1px solid var(--ga-iron);
+  border-radius: 2px;
+  background: #060405;
+  color: var(--ga-bone);
+  font-family: var(--ga-display);
+  font-size: 18px;
+  text-align: center;
+}
+
+.ga-pop-until,
+.ga-pop-note {
+  margin: 9px 0 0;
+  color: var(--ga-ash);
+}
+
+.ga-pop-until {
+  color: var(--ga-bone);
+}
+
+.ga-pop-actors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 10px;
+  max-height: 132px;
+  overflow-y: auto;
+}
+
+.ga-pop-actors label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.ga-pop-actors span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ga-pop-actors input {
+  flex: none;
+  margin: 0;
+  accent-color: var(--ga-blood);
+}
+
+.ga-pop-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 13px;
+}
+
+.ga-hud .ga-pop-foot .ga-btn {
+  height: 28px;
+  padding: 0 12px;
+}
+
+/* --------------------------------------------------------------------------
+   Rest scene
+   -------------------------------------------------------------------------- */
+
+.ga-rest-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+  user-select: none;
+}
+
+.ga-rest-shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 42%, #1c0708 0%, #070304 48%, #000 100%);
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.ga-rest-overlay.ga-in .ga-rest-shade {
+  opacity: 1;
+}
+
+.ga-rest-overlay.ga-out .ga-rest-shade {
+  opacity: 0;
+}
+
+.ga-rest-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(14px, 3.4vh, 36px);
+}
+
+.ga-rest-dial {
+  width: min(48vh, 72vw, 460px);
+  aspect-ratio: 1;
+  overflow: visible;
+  transform-origin: 50% 50%;
+  transition: transform 1.1s cubic-bezier(0.25, 0.7, 0.2, 1), opacity 0.7s ease;
+  filter: drop-shadow(0 0 34px rgba(163, 22, 27, 0.35));
+}
+
+.ga-rest-overlay.ga-out .ga-rest-dial {
+  transition: transform 1s cubic-bezier(0.6, 0, 0.7, 0.4), opacity 0.6s ease 0.3s;
+}
+
+.ga-rest-dial .ga-dial-hub-art {
+  opacity: 0;
+  transition: opacity 0.7s ease 0.9s;
+}
+
+.ga-rest-overlay.ga-in .ga-dial-hub-art {
+  opacity: 1;
+}
+
+.ga-rest-overlay.ga-out .ga-dial-hub-art {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ga-rest-caption {
+  color: var(--ga-bone);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.7s ease 0.9s, transform 0.7s ease 0.9s;
+}
+
+.ga-rest-overlay.ga-in .ga-rest-caption {
+  opacity: 1;
+  transform: none;
+}
+
+.ga-rest-overlay.ga-out .ga-rest-caption {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.ga-rest-title {
+  font-family: var(--ga-display);
+  font-size: clamp(22px, 3.6vh, 36px);
+  font-weight: 500;
+  line-height: 1.1;
+  color: #df6468;
+}
+
+.ga-rest-clock {
+  font-family: var(--ga-display);
+  font-size: clamp(46px, 9vh, 92px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ga-rest-suffix {
+  margin-left: 0.3em;
+  font-family: var(--ga-label);
+  font-size: 0.3em;
+  letter-spacing: 0.08em;
+  color: var(--ga-ash);
+}
+
+.ga-rest-suffix:empty {
+  display: none;
+}
+
+.ga-rest-sub {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+  font-family: var(--ga-label);
+  font-size: clamp(11px, 1.6vh, 14px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--ga-ash);
+}
+
+.ga-rest-dot {
+  width: 5px;
+  height: 5px;
+  margin: 0 12px;
+  background: var(--ga-ember);
+  transform: rotate(45deg);
+}
+
+/* line art inside the hub */
+
+.ga-art {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ga-art-ground {
+  fill: none;
+  stroke: #f4efe6;
+  stroke-width: 1.6;
+  opacity: 0.6;
+}
+
+.ga-flame-out,
+.ga-flame-core {
+  fill: #f4efe6;
+}
+
+.ga-flame-mid {
+  fill: #050304;
+}
+
+.ga-logs rect {
+  fill: #050304;
+  stroke: #f4efe6;
+  stroke-width: 2.2;
+}
+
+.ga-logs circle,
+.ga-logs path {
+  fill: none;
+  stroke: #f4efe6;
+  stroke-width: 1.4;
+}
+
+.ga-sparks circle {
+  fill: #f4efe6;
+  animation: ga-spark 2.6s ease-out infinite;
+}
+
+.ga-sparks circle:nth-child(2) { animation-delay: 0.7s; animation-duration: 3.1s; }
+.ga-sparks circle:nth-child(3) { animation-delay: 1.4s; animation-duration: 2.3s; }
+.ga-sparks circle:nth-child(4) { animation-delay: 2s; animation-duration: 2.9s; }
+
+.ga-campfire {
+  animation: ga-firelight 0.9s ease-in-out infinite alternate;
+}
+
+.ga-hand > * {
+  fill: #050304;
+  stroke: #f4efe6;
+  stroke-width: 2.2;
+}
+
+.ga-hand-outline {
+  fill: none;
+  stroke: #f4efe6;
+  stroke-width: 2.2;
+}
+
+.ga-wrap {
+  fill: none;
+  stroke: #f4efe6;
+  stroke-width: 6.2;
+  stroke-linecap: butt;
+}
+
+.ga-roll circle {
+  fill: #050304;
+  stroke: #f4efe6;
+  stroke-width: 2;
+}
+
+.ga-roll path {
+  fill: none;
+  stroke: #f4efe6;
+  stroke-width: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Settings window
+   -------------------------------------------------------------------------- */
+
+.grim-almanac-config .window-content {
+  padding: 14px 16px 16px;
+  background: linear-gradient(#170d0f, #0a0607);
+  color: var(--ga-bone);
+  font-family: var(--ga-body);
+  font-size: 13px;
+}
+
+.ga-config-now {
+  margin: 0 0 10px;
+  font-family: var(--ga-display);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.ga-config-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--ga-iron);
+}
+
+.grim-almanac-config .ga-config-tabs button {
+  flex: 1;
+  width: auto;
+  height: 30px;
+  margin: 0 0 -1px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+  background: none;
+  box-shadow: none;
+  color: var(--ga-ash);
+  font-family: var(--ga-label);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.grim-almanac-config .ga-config-tabs button:hover {
+  color: var(--ga-bone);
+  text-shadow: none;
+}
+
+.grim-almanac-config .ga-config-tabs button.is-on {
+  border-color: var(--ga-iron);
+  background: #1c1012;
+  color: var(--ga-bone);
+  box-shadow: inset 0 2px 0 var(--ga-blood);
+}
+
+.ga-config fieldset {
+  margin: 0 0 12px;
+  padding: 10px 12px 12px;
+  border: 1px solid var(--ga-iron);
+  border-radius: 2px;
+}
+
+.ga-config legend {
+  padding: 0 6px;
+  font-family: var(--ga-display);
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--ga-bone);
+}
+
+.ga-grid {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ga-grid-date {
+  grid-template-columns: 0.7fr 2fr 1fr 0.7fr 0.7fr;
+}
+
+.ga-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.ga-config label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  color: var(--ga-ash);
+  font-size: 12px;
+}
+
+.ga-config label.ga-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  color: var(--ga-bone);
+  font-size: 13px;
+}
+
+.grim-almanac-config .ga-config input[type="text"],
+.grim-almanac-config .ga-config input[type="number"],
+.grim-almanac-config .ga-config select {
+  width: 100%;
+  min-width: 0;
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid var(--ga-iron);
+  border-radius: 2px;
+  background: #060405;
+  color: var(--ga-bone);
+  font-family: var(--ga-body);
+  font-size: 13px;
+}
+
+.grim-almanac-config .ga-config input:focus,
+.grim-almanac-config .ga-config select:focus {
+  border-color: var(--ga-ember);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ga-ember);
+}
+
+.grim-almanac-config .ga-config input[type="checkbox"] {
+  flex: none;
+  margin: 0;
+  accent-color: var(--ga-blood);
+}
+
+.ga-hint {
+  margin: 0 0 10px;
+  color: var(--ga-ash);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.ga-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.ga-steps:last-child,
+.ga-config fieldset > .ga-hint:last-child {
+  margin-bottom: 0;
+}
+
+.grim-almanac-config .ga-btn {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 11px;
+}
+
+.grim-almanac-config .ga-btn-icon {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+}
+
+.ga-table-wrap {
+  max-height: 300px;
+  margin-bottom: 8px;
+  overflow-y: auto;
+  border: 1px solid var(--ga-iron);
+}
+
+.ga-months {
+  width: 100%;
+  margin: 0;
+  border: none;
+  border-collapse: collapse;
+  background: none;
+}
+
+.ga-months th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 6px 4px;
+  background: #1c1012;
+  color: var(--ga-ash);
+  font-family: var(--ga-label);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: left;
+}
+
+.ga-months td {
+  padding: 2px 3px;
+  border: none;
+  background: none;
+}
+
+.ga-months tr {
+  background: none;
+}
+
+.ga-months td:nth-child(2),
+.ga-months td:nth-child(3) {
+  width: 62px;
+}
+
+.ga-months td:nth-child(4) {
+  width: 104px;
+}
+
+.ga-months .ga-center {
+  width: 58px;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Motion
+   -------------------------------------------------------------------------- */
+
+@keyframes ga-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ga-breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes ga-colon {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes ga-ink {
+  from { opacity: 0.25; }
+  to { opacity: 1; }
+}
+
+@keyframes ga-spark {
+  0% { transform: translate(0, 22px); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(5px, -16px); opacity: 0; }
+}
+
+@keyframes ga-firelight {
+  from { opacity: 0.9; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ga-gear,
+  .ga-gem,
+  .ga-colon,
+  .ga-changed,
+  .ga-campfire,
+  .ga-sparks circle,
+  .ga-roll,
+  .ga-wrap {
+    animation: none !important;
+  }
+
+  .ga-dial-disc,
+  .ga-thermo-fill,
+  .ga-rest-dial {
+    transition-duration: 0.01s !important;
+  }
+}
