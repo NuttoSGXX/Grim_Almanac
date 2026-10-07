@@ -18,6 +18,10 @@
       "Theme": {
         "Name": "Colour theme",
         "Hint": "Applies to the almanac, the rest scene and the almanac settings window for everyone in this world."
+      },
+      "ReverseDial": {
+        "Name": "Turn the dial the other way",
+        "Hint": "Flips the direction the sun and moon travel around the dial as time passes."
       }
     },
     "Season": {

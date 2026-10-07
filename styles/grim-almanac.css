@@ -62,7 +62,7 @@
   --ga-sky-4: #040304;
   --ga-lum: #eadfce;
   --ga-hub-1: #1b1011;
-  --ga-hub-2: var(--ga-art-bg);
+  --ga-hub-2: #050304;
   --ga-rim-1: #4b3232;
   --ga-rim-2: #1e1314;
   --ga-rim-3: #0c0708;
@@ -76,8 +76,8 @@
   --ga-pri-h1: #b51d22;
   --ga-pri-h2: #5c1114;
   --ga-on-accent: #eadfce;
-  --ga-art-fg: var(--ga-art-fg);
-  --ga-art-bg: var(--ga-art-bg);
+  --ga-art-fg: #f4efe6;
+  --ga-art-bg: #050304;
   --ga-shade: #1c0708;
   --ga-rest-text: #eadfce;
   --ga-rest-muted: #a89a8f;
@@ -320,23 +320,16 @@ body[data-ga-theme="sapphire"] :is(.ga-hud, .ga-rest-overlay, .grim-almanac-conf
   stroke-width: 1;
 }
 
-/* running glow on the thin accent lines */
+/* metal sheen: a band of reflected light that sweeps across every accent line */
 
-.ga-svg .ga-glint,
-.ga-rest-dial .ga-glint {
+.ga-svg .ga-sheen,
+.ga-rest-dial .ga-sheen {
   fill: none;
-  stroke: var(--ga-glint);
-  stroke-width: 1.7;
+  stroke-width: 1.9;
   stroke-linecap: round;
-  stroke-dasharray: 6 94;
   pointer-events: none;
-  filter: drop-shadow(0 0 2px var(--ga-glint)) drop-shadow(0 0 5px var(--ga-ember));
-  animation: ga-glint 9s linear infinite;
+  filter: drop-shadow(0 0 1.6px var(--ga-glint));
 }
-
-.ga-glint-b { animation-delay: -4.5s !important; }
-.ga-glint-c { animation-duration: 7s !important; animation-delay: -2s !important; }
-.ga-glint-ring { animation-duration: 11s !important; stroke-dasharray: 5 95 !important; }
 
 /* text */
 
@@ -1276,11 +1269,6 @@ body[data-ga-theme="sapphire"] :is(.ga-hud, .ga-rest-overlay, .grim-almanac-conf
   to { transform: rotate(360deg); }
 }
 
-@keyframes ga-glint {
-  from { stroke-dashoffset: 100; }
-  to { stroke-dashoffset: 0; }
-}
-
 @keyframes ga-breathe {
   0%, 100% { opacity: 0.55; }
   50% { opacity: 1; }
@@ -1308,12 +1296,11 @@ body[data-ga-theme="sapphire"] :is(.ga-hud, .ga-rest-overlay, .grim-almanac-conf
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ga-glint {
+  .ga-sheen {
     display: none;
   }
 
   .ga-gear,
-  .ga-glint,
   .ga-gem,
   .ga-colon,
   .ga-changed,

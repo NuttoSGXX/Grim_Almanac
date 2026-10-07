@@ -7,7 +7,7 @@
  */
 
 import { DAY, periodKey, formatTime } from "./calendar.js";
-import { SOCKET, L, LF, getDate, nowSeconds, clientOptions } from "./state.js";
+import { SOCKET, L, LF, getDate, nowSeconds, clientOptions, dialDirection } from "./state.js";
 import { dialMarkup, dialAngle, campfireMarkup, bandageMarkup } from "./art.js";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -159,7 +159,8 @@ export function playRest(hud, { type, hours, from }) {
     const use24h = clientOptions().use24h;
     const to = from + hours * 3600;
     const startDate = getDate(from);
-    const startAngle = dialAngle(startDate.secondsOfDay);
+    const direction = dialDirection();
+    const startAngle = dialAngle(startDate.secondsOfDay, direction);
 
     const overlay = document.createElement("div");
     overlay.className = `ga-rest-overlay ga-rest-${type}`;
@@ -190,7 +191,7 @@ export function playRest(hud, { type, hours, from }) {
       timeEl.textContent = `${t.hh}:${t.mm}`;
       suffixEl.textContent = t.suffix;
       periodEl.textContent = L(`Period.${periodKey(d.hour)}`);
-      disc.style.transform = `rotate(${(startAngle + ((seconds - from) / DAY) * 360).toFixed(2)}deg)`;
+      disc.style.transform = `rotate(${(startAngle + direction * ((seconds - from) / DAY) * 360).toFixed(2)}deg)`;
     };
     show(from);
 

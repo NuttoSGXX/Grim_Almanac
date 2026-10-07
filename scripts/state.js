@@ -63,6 +63,12 @@ export function registerSettings() {
     }
   });
 
+  game.settings.register(MODULE_ID, "reverseDial", {
+    name: "GRIMALMANAC.Settings.ReverseDial.Name",
+    hint: "GRIMALMANAC.Settings.ReverseDial.Hint",
+    scope: "world", config: true, type: Boolean, default: false, onChange: refresh
+  });
+
   // ---- per-client options ----
   game.settings.register(MODULE_ID, "hudScale", {
     name: "GRIMALMANAC.Settings.Scale.Name",
@@ -99,6 +105,11 @@ export function applyTheme() {
 export async function setTheme(theme) {
   if (!game.user.isGM || !THEMES.includes(theme)) return;
   await game.settings.set(MODULE_ID, "theme", theme);
+}
+
+/** +1 or -1: which way the dial turns as time moves forward. */
+export function dialDirection() {
+  return game.settings.get(MODULE_ID, "reverseDial") ? 1 : -1;
 }
 
 /* ------------------------------ readers ------------------------------ */

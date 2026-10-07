@@ -7,6 +7,36 @@
 const f = (n) => Number(n.toFixed(2));
 
 /* -------------------------------------------------------------------------- */
+/*  Metal sheen                                                               */
+/* -------------------------------------------------------------------------- */
+
+/** One sweep of reflected light every SHEEN.period seconds, lasting SHEEN.sweep of that. */
+const SHEEN = { period: 6.5, sweep: 0.3 };
+
+/**
+ * A slanted band of light that travels from x = `from` to x = `to` and then waits.
+ * Lines stroked with it look like polished metal catching a light.
+ * @param {string} id     gradient id
+ * @param {number} from   start x of the band (user units of the lines it paints)
+ * @param {number} to     end x
+ * @param {number} scale  size of the band, for art drawn at another scale
+ */
+function sheenGradient(id, from, to, scale = 1) {
+  const w = f(110 * scale);
+  const h = f(46 * scale);
+  return `
+      <linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${w}" y2="${h}">
+        <stop offset="0" style="stop-color:var(--ga-glint)" stop-opacity="0"/>
+        <stop offset="0.35" style="stop-color:var(--ga-glint)" stop-opacity="0.15"/>
+        <stop offset="0.5" style="stop-color:var(--ga-glint)" stop-opacity="1"/>
+        <stop offset="0.65" style="stop-color:var(--ga-glint)" stop-opacity="0.15"/>
+        <stop offset="1" style="stop-color:var(--ga-glint)" stop-opacity="0"/>
+        <animateTransform attributeName="gradientTransform" type="translate" dur="${SHEEN.period}s" repeatCount="indefinite"
+          values="${f(from)} 0; ${f(to)} 0; ${f(to)} 0" keyTimes="0; ${SHEEN.sweep}; 1"/>
+      </linearGradient>`;
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Dial                                                                      */
 /* -------------------------------------------------------------------------- */
 
@@ -28,10 +58,11 @@ export function emblemMarkup() {
 /**
  * The day/night dial. Drawn in a box from -100 to 100, centred on 0,0.
  * The disc rotates so the sun is at the top at noon and the moon at midnight.
- * @param {string} p    unique prefix for gradient ids
- * @param {string} hub  markup placed inside the fixed centre hub
+ * @param {string} p      unique prefix for gradient ids
+ * @param {string} hub    markup placed inside the fixed centre hub
+ * @param {object} sheen  travel of the light band in dial units: { from, to, scale }
  */
-export function dialMarkup(p, hub = emblemMarkup()) {
+export function dialMarkup(p, hub = emblemMarkup(), sheen = { from: -330, to: 220, scale: 1.6 }) {
   const ticks = [];
   for (let i = 0; i < 24; i++) {
     const major = i % 6 === 0;
@@ -51,7 +82,7 @@ export function dialMarkup(p, hub = emblemMarkup()) {
   ].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`);
 
   return `
-    <defs>
+    <defs>${sheenGradient(`${p}-sheen`, sheen.from, sheen.to, sheen.scale)}
       <linearGradient id="${p}-sky" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" style="stop-color:var(--ga-sky-1)"/>
         <stop offset="0.36" style="stop-color:var(--ga-sky-2)"/>
@@ -85,17 +116,22 @@ export function dialMarkup(p, hub = emblemMarkup()) {
       <path class="ga-dial-horizon" d="M-76,0 l5,-3.5 l5,3.5 l-5,3.5 Z M66,0 l5,-3.5 l5,3.5 l-5,3.5 Z"/>
     </g>
     <circle class="ga-dial-inner-line" r="87"/>
-    <circle class="ga-glint ga-glint-ring" pathLength="100" r="87"/>
+    <circle class="ga-sheen" r="87" stroke="url(#${p}-sheen)"/>
     <g class="ga-dial-ticks">${ticks.join("")}</g>
     <circle class="ga-dial-hub" r="56" fill="url(#${p}-hub)"/>
     <circle class="ga-dial-hub-line" r="51.5"/>
+    <circle class="ga-sheen" r="51.5" stroke="url(#${p}-sheen)"/>
     <g class="ga-dial-hub-art" clip-path="url(#${p}-hubclip)">${hub}</g>
     <path class="ga-dial-pointer" d="M0,-101 L4.5,-93 L0,-83 L-4.5,-93 Z"/>`;
 }
 
-/** Rotation of the dial disc (degrees) for a time of day in seconds. */
-export function dialAngle(secondsOfDay) {
-  return ((secondsOfDay / 3600 - 12) / 24) * 360;
+/**
+ * Rotation of the dial disc (degrees) for a time of day in seconds.
+ * The sun is at the top at noon either way; `direction` is +1 or -1 and
+ * decides which way the disc turns as time moves forward.
+ */
+export function dialAngle(secondsOfDay, direction = 1) {
+  return direction * ((secondsOfDay / 3600 - 12) / 24) * 360;
 }
 
 function gearPath(teeth, rOuter, rInner) {
@@ -195,6 +231,7 @@ export function hudMarkup() {
         <stop offset="0.45" style="stop-color:var(--ga-ember)"/>
         <stop offset="1" style="stop-color:var(--ga-merc)"/>
       </linearGradient>
+${sheenGradient("gah-sheen", -160, 700)}
       <clipPath id="gah-tube"><rect x="465.6" y="50" width="8.8" height="62" rx="4.4"/></clipPath>
     </defs>
 
@@ -206,15 +243,15 @@ export function hudMarkup() {
     </g>
 
     <g class="ga-dial" transform="translate(320,104) scale(0.92)">
-      ${dialMarkup("gah")}
+      ${dialMarkup("gah", emblemMarkup(), { from: (-160 - 320) / 0.92, to: (700 - 320) / 0.92, scale: 1 / 0.92 })}
     </g>
 
     <path class="ga-panel" d="${archL}" fill="url(#gah-panel)"/>
     <path class="ga-panel-line" d="${archLin}"/>
-    <path class="ga-glint" pathLength="100" d="${archLin}"/>
+    <path class="ga-sheen" d="${archLin}" stroke="url(#gah-sheen)"/>
     <path class="ga-panel" d="${archR}" fill="url(#gah-panel)"/>
     <path class="ga-panel-line" d="${archRin}"/>
-    <path class="ga-glint ga-glint-b" pathLength="100" d="${archRin}"/>
+    <path class="ga-sheen" d="${archRin}" stroke="url(#gah-sheen)"/>
     <path class="ga-stud" d="M113,27 l4,5.5 l-4,5.5 l-4,-5.5 Z M527,27 l4,5.5 l-4,5.5 l-4,-5.5 Z"/>
 
     <!-- date -->
@@ -258,7 +295,7 @@ export function hudMarkup() {
     <text class="ga-t ga-label ga-period" x="320" y="198.5" data-ga="period"></text>
     <path class="ga-plaque" d="${plaque}" fill="url(#gah-plaque)"/>
     <path class="ga-plaque-line" d="${plaqueIn}"/>
-    <path class="ga-glint ga-glint-c" pathLength="100" d="${plaqueIn}"/>
+    <path class="ga-sheen" d="${plaqueIn}" stroke="url(#gah-sheen)"/>
     <path class="ga-stud" d="M226,151 l4.5,-6 l4.5,6 l-4.5,6 Z M405,151 l4.5,-6 l4.5,6 l-4.5,6 Z"/>
     <text class="ga-t ga-time" x="320" y="167"><tspan data-ga="hh"></tspan><tspan class="ga-colon">:</tspan><tspan data-ga="mm"></tspan><tspan class="ga-suffix" dx="5" data-ga="suffix"></tspan></text>
   </svg>`;

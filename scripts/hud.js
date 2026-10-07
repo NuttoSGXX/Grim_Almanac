@@ -6,7 +6,7 @@ import { DAY, periodKey, isNight, formatTime } from "./calendar.js";
 import { tempBand, toUnit } from "./weather.js";
 import {
   MODULE_ID, L, getCalendar, getDate, getWeather, getMoon, getMoonPhase, getTempC,
-  clientOptions, advanceTime, nowSeconds
+  clientOptions, advanceTime, nowSeconds, dialDirection
 } from "./state.js";
 import { hudMarkup, dialAngle, moonIcon, SEASON_ICONS, WEATHER_ICONS } from "./art.js";
 
@@ -21,6 +21,7 @@ export class AlmanacHUD {
     this.texts = {};
     this.angle = null;
     this.lastNow = null;
+    this.direction = null;
     this.first = true;
   }
 
@@ -239,14 +240,16 @@ export class AlmanacHUD {
     this.#text("moon", L(`Moon.${phase.key}`));
     this.#icon("moonIcon", `moon-${Math.round(phase.fraction * 48)}`, moonIcon(phase.fraction));
 
-    // dial: time moving forward always turns it clockwise, however big the jump;
+    // dial: time moving forward always turns it the same way, however big the jump;
     // only going back in time turns it the other way.
-    if (this.angle === null) this.angle = dialAngle(d.secondsOfDay);
+    const direction = dialDirection();
+    if (this.angle === null || this.direction !== direction) this.angle = dialAngle(d.secondsOfDay, direction);
     else {
-      const turn = ((now - this.lastNow) / DAY) * 360;
+      const turn = direction * ((now - this.lastNow) / DAY) * 360;
       this.angle += Math.sign(turn) * (Math.abs(turn) % 360);
     }
     this.lastNow = now;
+    this.direction = direction;
     this.refs.disc.style.transform = `rotate(${this.angle.toFixed(2)}deg)`;
     this.el.classList.toggle("ga-night", night);
 
