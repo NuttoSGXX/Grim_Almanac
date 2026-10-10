@@ -38,7 +38,7 @@ https://github.com/NuttoSGXX/Grim_Almanac/releases/latest/download/module.json
 
 ## ธีมสี
 
-GM เลือกได้ที่ ⚙ → Date and time → Display → Colour theme (หรือ Configure Settings → Grim Almanac) ธีมมีผลกับ HUD ฉากพัก และหน้าตั้งค่า ของทุกคนในโลกนั้น
+GM เลือกได้ที่ ⚙ → Date and time → Display → Colour theme (หรือ Configure Settings → Grim Almanac) ถ้าเปิดใช้ Grim Core ให้เลือกที่ Grim Core แทน ธีมมีผลกับ HUD ฉากพัก และหน้าตั้งค่า ของทุกคนในโลกนั้น
 
 | ธีม | สี |
 | --- | --- |
@@ -48,6 +48,15 @@ GM เลือกได้ที่ ⚙ → Date and time → Display → Colou
 | Sapphire | ดำ–น้ำเงิน |
 
 ทุกธีมใช้ token `--ga-*` ชุดเดียวกันที่ต้นไฟล์ `styles/grim-almanac.css` จะแก้เฉดหรือเพิ่มธีมใหม่ก็แก้ที่บล็อกนั้น (ถ้าเพิ่มธีม ให้เพิ่มชื่อใน `THEMES` ที่ `scripts/state.js` และ `Theme.*` ใน `lang/en.json` ด้วย)
+
+## ใช้ร่วมกับ Grim Core
+
+[Grim Core](https://github.com/NuttoSGXX/Grim_Core) คือแผงตั้งค่าธีมรวมของโมดูล Grim ทุกตัว ไม่จำเป็นต้องมี แต่ถ้าเปิดใช้ Grim Almanac จะทำงานแบบนี้
+
+- ธีมสีของ Almanac ตาม Grim Core ทั้ง 4 ธีม (Abyss ของ Core คือ Sapphire ของ Almanac) และสีกำหนดเอง (Custom)
+- ตัวเลือกธีมใน ⚙ ของ Almanac และใน Configure Settings จะถูกล็อก และมีปุ่ม **Open Grim Core** ให้ไปเปลี่ยนที่เดียว ธีมจึงไม่หลุดจากโมดูลอื่น
+- ตอนลองเลือกธีมในแผง Grim Core HUD จะเปลี่ยนให้ดูทันทีก่อนกด Apply (เฉพาะ 4 ธีมสำเร็จรูป ส่วน Custom พื้นสว่าง/มืดจะตรงหลังกด Apply) ปิดแผงโดยไม่ Apply ก็กลับเป็นธีมเดิม
+- ถ้าเอาติ๊ก Grim Almanac ออกจาก "Modules that follow" ใน Grim Core ตัวเลือกธีมของ Almanac จะกลับมาใช้ได้ตามปกติ
 
 ## เวลาเดินยังไง
 
@@ -70,6 +79,12 @@ almanac.getDate();
 ภาพทั้งหมดเป็น SVG ที่สร้างใน `scripts/art.js` (กรอบ HUD, หน้าปัด, กองไฟ, มือพันแผล) สีและฟอนต์อยู่ต้นไฟล์ `styles/grim-almanac.css`
 
 ## Changelog
+
+**0.1.3**
+- ทำงานร่วมกับ Grim Core: ล็อกตัวเลือกธีมของ Almanac เมื่อ Grim Core เป็นคนคุมสี พร้อมปุ่มเปิด Grim Core
+- HUD ตามธีมที่กำลังลองในแผง Grim Core ทันที (live preview)
+- รับชื่อธีม `abyss` เป็นชื่อเดียวกับ `sapphire`
+- `module.json` แนะนำ Grim Core (recommends)
 
 **0.1.2**
 - แก้ภาพกองไฟและมือพันแผลเป็นสีดำล้วนในธีม Crimson (ค่าสีอ้างอิงตัวเอง)

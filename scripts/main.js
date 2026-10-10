@@ -8,6 +8,7 @@ import {
 import { AlmanacHUD } from "./hud.js";
 import { AlmanacConfig } from "./config.js";
 import { openRestPopover, beginRest, playRest } from "./rest.js";
+import { coreManaged, coreThemeLabel, watchCore } from "./core.js";
 
 let hud = null;
 let config = null;
@@ -32,6 +33,11 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", () => {
   applyTheme();
+  // Grim Core (optional): follow its theme and its live preview.
+  watchCore(() => {
+    applyTheme();
+    if (config?.rendered) config.render();
+  });
   hud = new AlmanacHUD({
     onRest: (type) => openRestPopover(hud, type),
     onConfig: openConfig
@@ -46,6 +52,8 @@ Hooks.once("ready", () => {
   game.modules.get(MODULE_ID).api = {
     hud,
     openConfig,
+    /** True while Grim Core (the shared Grim theme hub) decides this module's colours. */
+    themeManagedByCore: coreManaged,
     getDate,
     nowSeconds,
     advanceTime,
@@ -67,3 +75,17 @@ Hooks.on("updateWorldTime", () => {
 });
 
 Hooks.on(REFRESH_HOOK, () => hud?.refresh());
+
+// Grim Core keeps this module's theme setting in step with every other Grim module,
+// so the switch in Configure Settings is locked while it is in charge.
+Hooks.on("renderSettingsConfig", (app, html) => {
+  if (!coreManaged()) return;
+  const root = html instanceof HTMLElement ? html : html?.[0];
+  const select = root?.querySelector?.(`select[name="${MODULE_ID}.theme"]`);
+  if (!select) return;
+  select.disabled = true;
+  const note = document.createElement("p");
+  note.className = "hint ga-core-hint";
+  note.textContent = game.i18n.format("GRIMALMANAC.Core.Managed", { theme: coreThemeLabel() });
+  (select.closest(".form-group") ?? select.parentElement)?.append(note);
+});

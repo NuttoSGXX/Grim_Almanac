@@ -5,10 +5,11 @@
 import { PRESETS, SEASONS, MOON_PHASES, clonePreset, formatTime } from "./calendar.js";
 import { CLIMATES, CONDITIONS, toUnit, fromUnit } from "./weather.js";
 import {
-  MODULE_ID, REFRESH_HOOK, THEMES, L, getTheme, setTheme, getCalendar, getDate, getWeather, getMoon, getMoonPhase, getTempC,
+  MODULE_ID, REFRESH_HOOK, THEMES, L, LF, getTheme, setTheme, getCalendar, getDate, getWeather, getMoon, getMoonPhase, getTempC,
   nowSeconds, clientOptions, setDateTime, advanceTime, setCalendar, setMoon, setWeather, ensureWeather
 } from "./state.js";
 import { moonOffsetFor } from "./calendar.js";
+import { coreManaged, coreThemeLabel, openCore } from "./core.js";
 
 const { ApplicationV2 } = foundry.applications.api;
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -112,9 +113,14 @@ export class AlmanacConfig extends ApplicationV2 {
       </fieldset>
       <fieldset>
         <legend>${L("Config.Display")}</legend>
-        <div class="ga-grid ga-grid-3">
-          <label>${L("Config.Theme")}<select name="theme">${THEMES.map((t) => opt(t, L(`Theme.${t}`), t === getTheme())).join("")}</select></label>
-        </div>
+        ${coreManaged()
+          ? `<div class="ga-core-note">
+               <p>${LF("Core.Managed", { theme: esc(coreThemeLabel()) })}</p>
+               <button type="button" class="ga-btn ga-btn-primary" data-do="openCore"><i class="fa-solid fa-palette" inert></i><span>${L("Core.Open")}</span></button>
+             </div>`
+          : `<div class="ga-grid ga-grid-3">
+               <label>${L("Config.Theme")}<select name="theme">${THEMES.map((t) => opt(t, L(`Theme.${t}`), t === getTheme())).join("")}</select></label>
+             </div>`}
         <button type="button" class="ga-btn" data-do="resetPosition">${L("Config.ResetPosition")}</button>
         <p class="ga-hint">${L("Config.DisplayHint")}</p>
       </fieldset>`;
@@ -247,6 +253,8 @@ export class AlmanacConfig extends ApplicationV2 {
         });
         return this.render();
       }
+      case "openCore":
+        return openCore();
       case "resetPosition":
         return game.modules.get(MODULE_ID)?.api?.hud?.resetPosition();
       case "setWeather": {

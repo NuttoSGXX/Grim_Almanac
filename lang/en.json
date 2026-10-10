@@ -17,7 +17,7 @@
       },
       "Theme": {
         "Name": "Colour theme",
-        "Hint": "Applies to the almanac, the rest scene and the almanac settings window for everyone in this world."
+        "Hint": "Applies to the almanac, the rest scene and the almanac settings window for everyone in this world. With Grim Core active, the theme is chosen there instead."
       },
       "ReverseDial": {
         "Name": "Turn the dial the other way",
@@ -165,6 +165,10 @@
       "ash": "Ash (black, grey and white)",
       "amethyst": "Amethyst (white and purple)",
       "sapphire": "Sapphire (black and blue)"
+    },
+    "Core": {
+      "Managed": "Grim Core sets the colour theme for every Grim module (now: {theme}). Change it there.",
+      "Open": "Open Grim Core"
     }
   }
 }

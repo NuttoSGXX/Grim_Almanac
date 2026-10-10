@@ -11,6 +11,7 @@ import {
   PRESETS, clonePreset, sanitizeCalendar, fromSeconds, toSeconds, moonPhase, defaultMoon
 } from "./calendar.js";
 import { defaultWeather, rollWeather, currentTemp, diurnalOffset } from "./weather.js";
+import { coreManaged, coreLiveTheme, fromCoreName } from "./core.js";
 
 export const MODULE_ID = "grim-almanac";
 export const SOCKET = `module.${MODULE_ID}`;
@@ -93,17 +94,21 @@ export function registerSettings() {
 /* ------------------------------ theme ------------------------------ */
 
 export function getTheme() {
-  const t = game.settings.get(MODULE_ID, "theme");
+  const t = fromCoreName(game.settings.get(MODULE_ID, "theme"));
   return THEMES.includes(t) ? t : "crimson";
 }
 
 /** The stylesheet keys every colour off this attribute. */
 export function applyTheme() {
-  document.body.dataset.gaTheme = getTheme();
+  // While Grim Core is in charge, follow what it is showing (including its unsaved preview).
+  document.body.dataset.gaTheme = coreLiveTheme() ?? getTheme();
 }
 
 export async function setTheme(theme) {
+  theme = fromCoreName(theme);
   if (!game.user.isGM || !THEMES.includes(theme)) return;
+  // Grim Core owns the theme while it is active; change it there so every Grim module stays in step.
+  if (coreManaged()) return;
   await game.settings.set(MODULE_ID, "theme", theme);
 }
 

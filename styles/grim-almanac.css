@@ -1177,6 +1177,27 @@ body[data-ga-theme="sapphire"] :is(.ga-hud, .ga-rest-overlay, .grim-almanac-conf
   accent-color: var(--ga-blood);
 }
 
+/* shown in place of the theme switch while Grim Core is in charge */
+.ga-core-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 9px 11px;
+  border: 1px solid var(--ga-iron);
+  border-left: 3px solid var(--ga-blood);
+  border-radius: 2px;
+  background: var(--ga-raise);
+}
+
+.ga-core-note p {
+  flex: 1;
+  margin: 0;
+  color: var(--ga-bone);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
 .ga-hint {
   margin: 0 0 10px;
   color: var(--ga-ash);
